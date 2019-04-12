@@ -15,11 +15,15 @@
   <main>
     <aside class="main__aside">
       <form class="aside__task-form">
-        <label for="task-form__title-input">ToDo Title</label>
-        <input type="text" class="task-form__title-input">
-        <label for="task-form__item-input">ToDo Item</label>
-        <input type="text" class="task-form__item-input">
-        <button class="task-form__item-btn"></button>
+        <div class="task-form__task-title">
+          <label for="task-form__title-input">ToDo Title</label>
+          <input type="text" class="task-title__title-input">
+        </div>
+        <div class="task-form__task-item">
+          <label for="task-form__item-input">ToDo Item</label>
+          <input type="text" class="task-item__item-input">
+        <button class="task-item__item-btn"></button>
+        </div>
         <button class="task-form__make-task-btn">Make Task List</button>
         <button class="task-form__clear-btn">Clear All</button>
         <button class="task-form__filter-btn">Filter by Urgency</button>
