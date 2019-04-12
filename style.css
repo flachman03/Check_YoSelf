@@ -82,7 +82,7 @@ input {
   display: flex;
   flex-direction: column;
   height: 53vh;
-  margin: 15px;
+  margin: 15px 15px 0px 15px;
 }
 
 .task-form__task-title {
@@ -133,6 +133,50 @@ input {
 .filter-div__filter-btn {
 }
 
+/*----------main section----------*/
+
 .main__section {
   width: 66%;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+/*----------task cards-----------*/
+
+.section__task-card {
+  border: 1px solid #c7d3d8;
+  background-color: #fee89e;
+  width: 310px;
+}
+
+.task-card__card-header {
+  height: 45px;
+  border-bottom: 1px solid #fec40e;
+  padding: 10px;
+}
+
+h2 {
+  margin: 0;
+}
+.task-car__card-body {
+  flex: 1;
+}
+
+.task-card__card-footer {
+  border-top: 1px solid #fec40e;
+  height: 60px;
+  padding: 10px;
+}
+
+.card-footer__urgent-btn,
+.card-footer__delete-btn {
+  height: 40px;
+  width: 40px;
+  background-color: black;
+}
+
+.card-footer__delete-btn {
+  float: right;
 }
