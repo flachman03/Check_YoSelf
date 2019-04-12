@@ -5,6 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
+  <header>
+    <h1></h1>
+    <button></button>
+    <input type="text">
+  </header>
+  <main>
+    <aside class="main__aside">
+      <form class="aside__task-form">
+        <label for="task-form__title-input">ToDo Title</label>
+        <input type="text" class="task-form__title-input">
+        <label for="task-form__item-input">ToDo Item</label>
+        <input type="text" class="task-form__item-input">
+        <button class="task-form__item-btn"></button>
+        <button class="task-form__make-task-btn">Make Task List</button>
+        <button class="task-form__clear-btn">Clear All</button>
+        <button class="task-form__filter-btn">Filter by Urgency</button>
+      </form>
+    </aside>
+    <section class="main__section">
+      <div class="section__task-card">
+        <article class="task-card__card-header">
+          <h2 class="card-header__task-title"></h2>
+        </article>
+        <article class="task-card__card-body"></article>
+        <article class="task-card__card-footer">
+          <button class="card-footer__urgent-btn"></button>
+          <button class="card-footer__delete-btn"></button>
+        </article>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
