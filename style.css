@@ -81,7 +81,7 @@ input {
 .aside__task-form {
   display: flex;
   flex-direction: column;
-  height: 53vh;
+  min-height: 48vh;
   margin: 15px 15px 0px 15px;
 }
 
@@ -130,7 +130,12 @@ input {
   padding: 30px 15px 0px 15px;
 }
 
-.filter-div__filter-btn {
+.task-form__task-list {
+  margin: 0;
+}
+
+.task-list__list-item {
+
 }
 
 /*----------main section----------*/
