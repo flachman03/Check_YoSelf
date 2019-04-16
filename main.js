@@ -24,13 +24,14 @@ if (currentList.length != 0) {
 }
 if(taskArray.length != 0) {
   loadTaskList(taskArray)
-  cardOnPageLoad(taskArray)
+  mainRefresh(taskArray)
 }
+disableButtons()
 
 /*--------------Event Listeners-------------*/
 
 asideForm.addEventListener('click', function(e) {
-  e.preventDefault()
+  e.preventDefault();
   if (e.target.className.includes('task-item__item-btn')) {
     createNewTask(currentList, 'currentList')
   }
@@ -43,6 +44,25 @@ asideForm.addEventListener('click', function(e) {
     clearAll()
   }
 })
+
+mainSection.addEventListener('click', function(e) {
+  var gParId = e.target.parentNode.parentNode.parentNode.dataset.id
+  if (e.target.className.includes('card-footer__urgent-btn')) {
+    urgentBtn(gParId)
+  }
+  if (e.target.className.includes('card-footer__delete-btn')) {
+    deleteCard(gParId)
+  }
+  if (e.target.className.includes('task-list__list-item')) {
+    checkOffListItem(gParId, e)
+  }
+})
+
+filterBtn.addEventListener('click', function(e) {
+  filterByUrgency()
+})
+
+itemInput.addEventListener('keyup', checkInputs)
 
 /*-----------------functions----------------*/
 
@@ -103,25 +123,24 @@ function displayTask(array) {
   taskList.innerHTML = '';
   array[0].tasks.forEach((item) => {
     taskList.innerHTML += 
-    `<li class="task-list__list-item">${item.toDo}</li>`;
+    `<li class="toDo-list__list-item">${item.toDo}</li>`;
   })
   titleInput.value = array[0].title
 }
 
 function createTaskCard(array, key) {
   mainSection.innerHTML = '';
-  array.forEach(item => {
-    item.updateToDo()
-    createCard(item)
-  })
+  mainRefresh(array)
   localStorage.removeItem(key)
   clearAll()
 }
 
-function cardOnPageLoad(array) {
+function mainRefresh(array) {
+  mainSection.innerHTML = '';
   array.forEach(item => {
-    item.updateToDo()
+    item.updateTaskList()
     createCard(item)
+    addUrgentClass(item)
   })
 }
 
@@ -144,8 +163,14 @@ function createCard(task) {
       <ul class="card-body__task-list">${task.taskList}</ul>
    </article>
    <article class="task-card__card-footer">
-      <button class="card-footer__urgent-btn"></button>
+      <div class="card-footer__urgent-div">
+        <button class="card-footer__urgent-btn"></button>
+        <p class="card-footer__urgent-text">Urgent</p>
+      </div>
+      <div class="card-footer__delete-div">
       <button class="card-footer__delete-btn"></button>
+      <p class="card-footer__delete-text">Delete</p>
+      </div>
    </article>
   </div>
 `
@@ -154,7 +179,6 @@ function createCard(task) {
 function updateTaskArray() {
   taskArray.push(currentList[0])
   taskArray[0].saveToStorage('taskArray', taskArray)
-  console.log(taskArray)
 }
 
 function removeAll() {
@@ -163,6 +187,135 @@ function removeAll() {
   currentList = [];
 }
 
+function updateMain(array) {
+  taskArray = array;
+  if (taskArray.length > 0) {
+    taskArray[0].saveToStorage('taskArray', taskArray)
+  }
+  mainSection.innerHTML = '';
+  mainRefresh(taskArray)
+}
 
+function disableButtons() {
+  clearBtn.disabled = true;
+  itemBtn.disabled = true;
+  taskBtn.disabled = true;
+}
 
+function enableButtons() {
+  clearBtn.disabled = false;
+  itemBtn.disabled = false;
+  taskBtn.disabled = false;
+}
 
+function checkInputs() {
+  if((titleInput.value != '') && (itemInput.value != '')) {
+    enableButtons()
+  }
+}
+
+function deleteCard(cardId) {
+  updatedArray = [];
+  taskArray.map(item => {
+    if(item.id != cardId) {
+      updatedArray.push(item)
+    }
+  })
+  taskArray[0].deleteFromStorage('taskArray')
+  updateMain(updatedArray)
+}
+
+function checkOffListItem(gparId, e) {
+  updatedArray = []
+  taskArray.map(item => {
+    if (item.id != gparId) {
+      updatedArray.push(item)
+    } else {
+      item.updateTaskObject(e)
+      updatedArray.push(item)
+    }
+  })
+  updateMain(updatedArray)
+}
+
+function urgentBtn(cardId) {
+  var updateArray = []
+  taskArray.map(item => {
+    if (item.id == cardId) {
+      item.updateUrgent()
+      updateArray.push(item)
+    } else {
+      updateArray.push(item)
+    }
+  })
+  updateMain(updateArray)
+}
+
+function addUrgentClass(item) {
+  var card = document.querySelectorAll('.section__task-card')
+  card.forEach(node => {
+    if (node.dataset.id  == item.id) {
+      card = node;
+    }
+  })
+  if (item.urgent == true) {
+    card.classList.add('section__task-card--urgent')
+  } else {
+    card.classList.remove('section__task-card--urgent')
+  }
+}
+
+function urgentFilter() {
+  var newArray = [];
+  taskArray.map(item => {
+    if (item.urgent == true) {
+      newArray.push(item)
+    }
+  })
+  mainRefresh(newArray)
+}
+
+function addFilterUrgent() {
+  filterBtn.classList.add('filter-div__filter-btn--urgent')
+}
+
+function removeFilterUrgent() {
+  filterBtn.classList.remove('filter-div__filter-btn--urgent')
+}
+
+function zeroUrgent() {
+  if (mainSection.innerHTML == '') {
+    mainSection.innerHTML +=
+    `<h2>Make some urgent ToDo's!!! Stat!`
+  }
+}
+
+function filterByUrgency() {
+  if (filterBtn.className.includes('filter-div__filter-btn--urgent')) {
+    removeFilterUrgent() 
+    mainRefresh(taskArray)
+  } else {
+    urgentFilter()
+    addFilterUrgent()
+    zeroUrgent()
+  }
+}
+
+function searchField() {
+  debugger;
+  var searchValue = searchInput.value.toUpperCase();
+  var newArray = [];
+  taskArray.forEach(item => {
+    var stringTitle = (item.title.toUpperCase())
+    var stringBody = (item.tasklist.toUpperCase())
+    if (stringTitle.idexOf(searchValue) > -1) {
+      newArray.push(item.title)
+    }
+    if (stringBody.indexOf(searchValue) > -1) {
+      newArray.push(item.taskList)
+    }
+  })
+  if (searchValue == '') {
+    newArray = []
+  }
+}

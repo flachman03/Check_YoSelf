@@ -4,7 +4,8 @@
     this.title = title;
     this.urgent = urgent || false;
     this.tasks = tasks || [];
-    this.taskList = taskList || '';
+    this.taskList = '';
+    this.urgentStyle = ''
   };
 
   saveToStorage(array, object) {
@@ -12,18 +13,32 @@
 	  localStorage.setItem(array, stringified);
   };
 
-  deleteFromStorage(array) {
-    var parsed = JSON.parse(localStorage.getItem)
-
+  deleteFromStorage(key) {
+    localStorage.removeItem(key)
   };
 
-  updateToDo() {
-    this.taskList = []
-    this.tasks.map((item) => {
-      this.taskList += 
-      `<li class="task-list__list-item" contenteditable="true">${item.toDo}</li>`;
+  updateUrgent() {
+    this.urgent = !this.urgent
+  }
+
+  urgentStyle() {
+    this.urgentStyle = '';
+    if (this.urgent == true) {
+      this.urgentStyle = 'class=""'
+    }
+  }
+  updateTaskList() {
+    this.taskList = '';
+    this.tasks.map(item => {
+      if (item.complete == false) {
+        this.taskList += 
+        `<li class="task-list__list-item" contenteditable="true" data-id="${item.id}">${item.toDo}</li>`
+      } else {
+        this.taskList += 
+        `<li class="task-list__list-item task-list__list-item--checked" contenteditable="true" data-id="${item.id}">${item.toDo}</li>`
+      }
     })
-  };
+  }
 
   updateTask() {
     this.tasks.map((item) => {
@@ -32,4 +47,11 @@
     })
   };
 
+  updateTaskObject(e) {
+    this.tasks.forEach(item => {
+      if (e.target.dataset.id == item.id) {
+        item.complete = !item.complete
+      }
+    })
+  }
 };
