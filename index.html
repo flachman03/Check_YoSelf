@@ -10,6 +10,7 @@
     <form class="header__search-form">
       <button class="header__search-btn"></button>
       <input type="text" class="header__search-input" name="Search">
+      <ul class="search-input__display-list"></ul>
     </form>
   </header>
   <main>
@@ -19,6 +20,7 @@
           <label for="task-form__title-input">ToDo Title</label>
           <input type="text" class="task-title__title-input">
         </div>
+        <ul class="task-form__task-list"></ul>
         <label for="task-form__item-input">ToDo Item</label>
         <div class="task-form__task-item">
           <input type="text" class="task-item__item-input">
@@ -31,25 +33,9 @@
         <button class="filter-div__filter-btn">Filter by Urgency</button>
       </div>
     </aside>
-    <section class="main__section">
-      <div class="section__task-card">
-        <article class="task-card__card-header">
-          <h2 class="card-header__task-title">Task Title</h2>
-        </article>
-        <article class="task-card__card-body">
-          <ul>
-            <li>dont ever play yourself</li>
-            <li>every change i get, i water my plants
-              <li>lion!</li>
-            </li>
-          </ul>
-        </article>
-        <article class="task-card__card-footer">
-          <button class="card-footer__urgent-btn"></button>
-          <button class="card-footer__delete-btn"></button>
-        </article>
-      </div>
-    </section>
+    <section class="main__section"></section>
   </main>
+<script src="todo-list.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
